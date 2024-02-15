@@ -16,10 +16,12 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject levelFailedPanel;
     [SerializeField] Text failPanelText;
+    [SerializeField] private Text timeScoreText;
     [Space(20)]
-    [Header("Booleans")]
+    [Header("Control Variables")]
     [SerializeField] private bool startPanelActive = true;
-     private void Awake()
+    private float score = 0;
+    private void Awake()
     {
 
         if (instance == null)
@@ -34,20 +36,31 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         Application.targetFrameRate = 60; //fps 60 kisitla
     }
 
-     void Update()
+    // private void Start() {
+    //     levelState = LevelState.Stop;
+    // }
+
+    void Update()
     {
-         if (Input.GetMouseButton(0) && startPanelActive)
-         {
-             StartCoroutine(StartPanelSetActive(false, 0));
-             // timerPanel.SetActive(true);
-             startPanelActive = false;
-         }
-         
-        if (Input.GetKey(KeyCode.R))
+        if (levelState == LevelState.Playing)
         {
-            OnTapToRetry();
+            // Oyun başladığında skoru artır
+            score += Time.deltaTime; // Time.deltaTime, son kare ile bu kare arasındaki zaman farkıdır.
+            UpdateScoreText();
+        }
+
+        if (Input.GetMouseButton(0) && startPanelActive)
+        {
+            StartCoroutine(StartPanelSetActive(false, 0));
+            startPanelActive = false;
+            levelState = LevelState.Playing; // Oyunun oynanma durumuna geçiş yap
         }
     }
+    void UpdateScoreText()
+{
+    // Skor değerini yuvarla ve text olarak göster
+    timeScoreText.text = "Score: " + Mathf.RoundToInt(score).ToString() ;
+}
     public void StartBtnAction() //levelstate degistirir.
     {
         StartCoroutine(StartPanelSetActive(false, 0));

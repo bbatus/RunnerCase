@@ -29,7 +29,7 @@ public class CameraFollow : MonoBehaviour
         Offset = camTransform.position - Target.position;
     }
 
-    private void LateUpdate() {
+    private void FixedUpdate() {
          // if (isFinishPos)
         //  return;
         // update position
