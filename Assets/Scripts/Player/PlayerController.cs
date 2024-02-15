@@ -5,38 +5,32 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
-    [Space(20)]
-    [Header("References")]
-    public static PlayerController instance = null;
-    [SerializeField] private float playerSpeed = 4f;
-    [SerializeField] private float dragSpeed = 0.0075f * 3.34f;
-    [SerializeField] public bool isDrag = true;
-    [SerializeField] private float maxPosX;
-    [SerializeField] private float minPosX;
-    private float playerStartSpeed = 0;
-    public float _mouseX;
-    [SerializeField]
-    List<float> mouseXList;
-
-    [Space(20)]
-    [Header("References")]
-    public float jumpForce = 5f;
-    public float crouchScaleY = 0.5f; // Karakterin eğilme sırasında Y ekseni boyunca ölçeklendirme faktörü
-    public bool isGrounded = true; // Karakterin yerde olup olmadığını kontrol etmek için
-    private Vector3 originalScale; // Karakterin orijinal ölçeğini saklamak için
-    private Rigidbody rb;
-    private bool isCrouching = false;
+    #region References
+    [SerializeField] private PlayerData playerData;
     public LevelState levelState;
+    public static PlayerController instance { get; private set; }
+    private Rigidbody rb;
+    private Vector3 originalScale;
+    #endregion
+
+    #region Controllers
+    private float playerStartSpeed = 0;
+    private List<float> mouseXList;
+    private bool isCrouching = false;
+    [SerializeField] public bool IsGrounded = true;
+    #endregion
+
     private void Awake()
     {
         Debug.Log("Awake basladi");
         if (instance == null)
         {
             instance = this;
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         FindComponents();
     }
@@ -45,7 +39,12 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponentInChildren<Rigidbody>();
         originalScale = transform.localScale;
+        mouseXList = new List<float>();
         Debug.Log("Componentler bulundu");
+    }
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
     }
 
     private void FixedUpdate()
@@ -64,10 +63,10 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckJump()
     {
-        if (Input.GetKey(KeyCode.W) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.W) && IsGrounded)
         {
-            Jump();
             Debug.Log("ziplama inputu aldi");
+            Jump();
         }
     }
     private void CheckCrouch()
@@ -75,8 +74,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             isCrouching = true;
-            Crouch(isCrouching);
             Debug.Log("egilme inputu aldi");
+            Crouch(isCrouching);
         }
         else if (Input.GetKeyUp(KeyCode.S))
         {
@@ -88,48 +87,48 @@ public class PlayerController : MonoBehaviour
 
     private void Move() //ileri gitme icin rigidbody kullanmasak da olur
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * playerSpeed);
+        transform.Translate(Vector3.forward * Time.deltaTime * playerData.Speed);
         //Debug.Log("Move calisiyor");
     }
 
     public void SpeedEdit(float _time)
     {
-        DOTween.To(() => playerSpeed, x => playerSpeed = x, playerStartSpeed, _time); //Hızı bir anda yükseltmemek icin
+        DOTween.To(() => playerData.Speed, x => playerData.Speed = x, playerStartSpeed, _time); //Hızı bir anda yükseltmemek icin
     }
 
     private void Drag()
     {
         // Debug.Log("Drag girdi");
-        if (!isDrag)
+        if (!playerData.IsDrag)
             return;
 
 
 #if UNITY_EDITOR
         float horizontalInput = Input.GetAxis("Horizontal");
-        _mouseX = Mathf.Clamp(_mouseX + horizontalInput * dragSpeed, minPosX, maxPosX);
+        playerData.MouseX = Mathf.Clamp(playerData.MouseX + horizontalInput * playerData.DragSpeed, playerData.MinPosX, playerData.MaxPosX);
 
 #else
     if (Input.touchCount > 0)
     {
-        _mouseX = Mathf.Clamp(_mouseX + Mathf.Clamp(Input.touches[0].deltaPosition.x, -35, 35) * dragSpeed * 2, minPosX, maxPosX);
+        _mouseX = Mathf.Clamp(_mouseX + Mathf.Clamp(Input.touches[0].deltaPosition.x, -35, 35) * playerData.DragSpeed * 2, playerData.MinPosX, playerData.MaxPosX);
     }
 #endif
 
-        UpdateMouseXList(_mouseX);
+        UpdateMouseXList(playerData.MouseX);
         UpdatePosition();
 
     }
 
     private void UpdateMouseXList(float mouseX)
     {
-        mouseXList.Insert(0, mouseX);
+        mouseXList.Insert(0, playerData.MouseX);
         if (mouseXList.Count > 20)
             mouseXList.RemoveAt(mouseXList.Count - 1);
     }
 
     private void UpdatePosition()
     {
-        transform.position = new Vector3(Mathf.Clamp(_mouseX, minPosX, maxPosX), transform.position.y, transform.position.z);
+        transform.position = new Vector3(Mathf.Clamp(playerData.MouseX, playerData.MinPosX, playerData.MaxPosX), transform.position.y, transform.position.z);
     }
 
     private void Jump()
@@ -141,34 +140,21 @@ public class PlayerController : MonoBehaviour
         }
 
         Debug.Log("Zipladi");
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        isGrounded = false;
+        rb.AddForce(Vector3.up * playerData.JumpForce, ForceMode.Impulse);
+        IsGrounded = false;
     }
 
     private void Crouch(bool isCrouching)
     {
         Debug.Log("egildi");
-        // Eğilme mantığı buraya eklenecek
-        // Örneğin, karakterin collider boyutunu azaltarak
         if (isCrouching)
         {
-            // Eğilme başladığında karakterin ölçeğini azalt
-            transform.localScale = new Vector3(transform.localScale.x, crouchScaleY, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, playerData.CrouchScaleY, transform.localScale.z);
         }
         else
         {
-            // Eğilme bittiğinde karakterin ölçeğini orijinaline döndür
             transform.localScale = originalScale;
         }
     }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.layer == 7) 
-        {
-            isGrounded = true;
-        }
-    }
-
 
 }

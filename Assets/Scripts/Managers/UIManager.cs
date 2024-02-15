@@ -17,9 +17,11 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     [SerializeField] private GameObject levelFailedPanel;
     [SerializeField] Text failPanelText;
     [SerializeField] private Text timeScoreText;
+    [SerializeField] private Text goldText;
     [Space(20)]
     [Header("Control Variables")]
     [SerializeField] private bool startPanelActive = true;
+    public int goldAmount = 0;
     private float score = 0;
     private void Awake()
     {
@@ -36,9 +38,10 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         Application.targetFrameRate = 60; //fps 60 kisitla
     }
 
-    // private void Start() {
-    //     levelState = LevelState.Stop;
-    // }
+     private void Start() {
+        //levelState = LevelState.Stop;
+         UpdateGold(0);
+    }
 
     void Update()
     {
@@ -47,6 +50,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             // Oyun başladığında skoru artır
             score += Time.deltaTime; // Time.deltaTime, son kare ile bu kare arasındaki zaman farkıdır.
             UpdateScoreText();
+
         }
 
         if (Input.GetMouseButton(0) && startPanelActive)
@@ -56,11 +60,16 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             levelState = LevelState.Playing; // Oyunun oynanma durumuna geçiş yap
         }
     }
-    void UpdateScoreText()
+   private void UpdateScoreText()
 {
     // Skor değerini yuvarla ve text olarak göster
     timeScoreText.text = "Score: " + Mathf.RoundToInt(score).ToString() ;
 }
+
+    public void UpdateGold(int amount) {
+        goldAmount += amount;
+        goldText.text = goldAmount.ToString();
+    }
     public void StartBtnAction() //levelstate degistirir.
     {
         StartCoroutine(StartPanelSetActive(false, 0));
@@ -73,7 +82,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         startPanel.SetActive(targetBool);
     }
 
-    public void OnTapToRetry()
+    public void RetryButton()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

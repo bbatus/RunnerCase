@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
- public static CameraFollow instance = null;
+ public static CameraFollow instance { get; private set; }
     public Transform Target;
     public Transform camTransform;
     public Vector3 Offset;
@@ -14,15 +14,16 @@ public class CameraFollow : MonoBehaviour
     private void Awake()
     {
 
+        Debug.Log("Camera Awake basladi");
         if (instance == null)
         {
             instance = this;
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
-
     }
     private void Start()
     {
