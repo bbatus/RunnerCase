@@ -14,18 +14,25 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     [Space(20)]
     [Header("Panel Objects")]
     [SerializeField] private GameObject startPanel;
-    [SerializeField] private GameObject levelFailedPanel;
+    [SerializeField] public GameObject levelFailedPanel;
     [SerializeField] Text failPanelText;
     [SerializeField] private Text timeScoreText;
+    [SerializeField] private Text bonusGoldText;
     [SerializeField] private Text goldText;
+    [SerializeField] private GameObject frameImage;
+    [SerializeField] private Text healthText;
+    [SerializeField] private GameObject[] hearts;
     [Space(20)]
     [Header("Control Variables")]
     [SerializeField] private bool startPanelActive = true;
     public int goldAmount = 0;
     private float score = 0;
+    private float health = 3;
+    private float scoreMultiplier = 10f;
+    private float goldScore = 0;
+    private float delay = 0.5f;
     private void Awake()
     {
-
         if (instance == null)
         {
             instance = this;
@@ -38,35 +45,73 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         Application.targetFrameRate = 60; //fps 60 kisitla
     }
 
-     private void Start() {
-        //levelState = LevelState.Stop;
-         UpdateGold(0);
-    }
-
-    void Update()
+    private void Start()
     {
-        if (levelState == LevelState.Playing)
-        {
-            // Oyun başladığında skoru artır
-            score += Time.deltaTime; // Time.deltaTime, son kare ile bu kare arasındaki zaman farkıdır.
-            UpdateScoreText();
+        //levelState = LevelState.Stop;
+        UpdateGold(0);
+    }
 
-        }
-
-        if (Input.GetMouseButton(0) && startPanelActive)
+    private void Update()
+{
+    if (levelState == LevelState.Playing)
+    {
+        score += Time.deltaTime * scoreMultiplier;
+        UpdateScoreText();
+        
+        if (Mathf.FloorToInt(score / 100) > Mathf.FloorToInt(goldScore / 100))
         {
-            StartCoroutine(StartPanelSetActive(false, 0));
-            startPanelActive = false;
-            levelState = LevelState.Playing; // Oyunun oynanma durumuna geçiş yap
+            goldScore = score;
+            UpdateGold(5); 
+            ShowBonusGoldMessage(); 
         }
     }
-   private void UpdateScoreText()
-{
-    // Skor değerini yuvarla ve text olarak göster
-    timeScoreText.text = "Score: " + Mathf.RoundToInt(score).ToString() ;
-}
 
-    public void UpdateGold(int amount) {
+    if (Input.GetMouseButton(0) && startPanelActive)
+    {
+        StartCoroutine(StartPanelSetActive(false, 0));
+        startPanelActive = false;
+        levelState = LevelState.Playing;
+    }
+}
+    private void UpdateHealthText()
+    {
+        healthText.text = "Health: " + Mathf.RoundToInt(health).ToString();
+    }
+    private void UpdateScoreText()
+    {
+        timeScoreText.text = "Score: " + Mathf.RoundToInt(score).ToString();
+    }
+    private void UpdateHealth() //Can degeri azalt float
+    {
+        health -= 1;
+        UpdateHealthText();
+        UpdateHealthUI();
+        if (health < 0)
+        {
+            StartCoroutine(ActivateLevelFailedPanel(0));
+        }
+    }
+    private void UpdateHealthUI() //Can degerlerini azalt UI
+    {
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < health)
+            {
+                hearts[i].SetActive(true);
+            }
+            else
+            {
+                hearts[i].SetActive(false);
+            }
+        }
+    }
+
+    public void DecreaseHealth()
+    {
+        UpdateHealth();
+    }
+    public void UpdateGold(int amount)
+    {
         goldAmount += amount;
         goldText.text = goldAmount.ToString();
     }
@@ -82,8 +127,44 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         startPanel.SetActive(targetBool);
     }
 
-    public void RetryButton()
+    public void RetryButton() //sahneye button ekle
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public IEnumerator ActivateLevelFailedPanel(float waitTime) //fail panel componentlerini ekle
+    {
+        levelState = LevelState.Lose;
+        yield return new WaitForSeconds(waitTime);
+        levelFailedPanel.SetActive(true);
+
+        yield return null;
+    }
+    public void WarningEffect() //Kırmızı Frame kapat ac
+    {
+        if (frameImage.activeInHierarchy)
+            return;
+
+        frameImage.SetActive(true);
+        StartCoroutine(Wait());
+
+        IEnumerator Wait()
+        {
+            yield return new WaitForSeconds(.5f);
+            frameImage.SetActive(false);
+        }
+    }
+
+    private void ShowBonusGoldMessage() //100 skor = 5 gold
+    {
+        bonusGoldText.text = "Extra 5 Golds!";
+        bonusGoldText.gameObject.SetActive(true); 
+        StartCoroutine(HideBonusGoldMessage(5));
+    }
+
+    private IEnumerator HideBonusGoldMessage(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        bonusGoldText.gameObject.SetActive(false);
     }
 }

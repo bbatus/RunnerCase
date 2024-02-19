@@ -17,7 +17,10 @@ public class PlayerController : MonoBehaviour
     private float playerStartSpeed = 0;
     private List<float> mouseXList;
     private bool isCrouching = false;
-    [SerializeField] public bool IsGrounded = true;
+    public bool IsGrounded = true;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
     #endregion
 
     private void Awake()
@@ -49,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GroundCheck();
         if (UIManager.instance.levelState == LevelState.Playing)
         {
             Move();
@@ -61,6 +65,10 @@ public class PlayerController : MonoBehaviour
         //Crouch(isCrouching);
         //Debug.Log("Fixed update girdi");
     }
+    private void GroundCheck()
+    {
+        IsGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+    }
     private void CheckJump()
     {
         if (Input.GetKeyDown(KeyCode.W) && IsGrounded)
@@ -71,17 +79,16 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckCrouch()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        isCrouching = Input.GetKey(KeyCode.S);
+        Crouch(isCrouching);
+
+        if (isCrouching)
         {
-            isCrouching = true;
-            Debug.Log("egilme inputu aldi");
-            Crouch(isCrouching);
+            Debug.Log("Egilme baslatildi");
         }
-        else if (Input.GetKeyUp(KeyCode.S))
+        else
         {
-            isCrouching = false;
-            Crouch(isCrouching);
-            Debug.Log("egilme birakti");
+            Debug.Log("Egilme durduruldu");
         }
     }
 
@@ -91,9 +98,9 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Move calisiyor");
     }
 
-    public void SpeedEdit(float _time)
+    public void SpeedEdit(float _time)  //Hızı bir anda yükseltmemek icin
     {
-        DOTween.To(() => playerData.Speed, x => playerData.Speed = x, playerStartSpeed, _time); //Hızı bir anda yükseltmemek icin
+        DOTween.To(() => playerData.Speed, x => playerData.Speed = x, playerStartSpeed, _time);
     }
 
     private void Drag()
@@ -107,7 +114,7 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         playerData.MouseX = Mathf.Clamp(playerData.MouseX + horizontalInput * playerData.DragSpeed, playerData.MinPosX, playerData.MaxPosX);
 
-#else
+#else //Mobil kontrol
     if (Input.touchCount > 0)
     {
         _mouseX = Mathf.Clamp(_mouseX + Mathf.Clamp(Input.touches[0].deltaPosition.x, -35, 35) * playerData.DragSpeed * 2, playerData.MinPosX, playerData.MaxPosX);
@@ -141,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log("Zipladi");
         rb.AddForce(Vector3.up * playerData.JumpForce, ForceMode.Impulse);
-        IsGrounded = false;
+        //IsGrounded = false;
     }
 
     private void Crouch(bool isCrouching)

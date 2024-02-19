@@ -6,50 +6,55 @@ public class PlayerAnimationController : MonoBehaviour
 {
     private Animator anim;
 
-    private void Awake() {
-        anim = GetComponentInChildren<Animator>();
-    }
-    void Start()
+    private void Awake()
     {
-        
+        anim = GetComponentInChildren<Animator>(); //playerparent altinda character
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(UIManager.instance.levelState == LevelState.Playing){
+        if (UIManager.instance.levelState == LevelState.Playing)
+        {
             RunAnim();
-            if(Input.GetKeyDown(KeyCode.S)){
+            if (Input.GetKeyDown(KeyCode.S))
+            {
                 SlideAnimStart();
             }
-                        if(Input.GetKeyUp(KeyCode.S)){
+            if (Input.GetKeyUp(KeyCode.S))
+            {
                 SlideAnimFinish();
             }
-        CheckJumpAnim();
-         
+            CheckJumpAnim();
+
             //             if(Input.GetKeyUp(KeyCode.W)){
             //     JumpAnimFinish();
             // }
         }
     }
 
-    private void CheckJumpAnim(){
-           if(Input.GetKeyDown(KeyCode.W)){
-                JumpAnimStart();
-            }
+    private void CheckJumpAnim()
+    {
+        if (Input.GetKeyDown(KeyCode.W) )
+        {
+            JumpAnimStart();
+        }
     }
-    private void RunAnim(){
-        anim.SetTrigger("isStarted"); 
+    private void RunAnim()
+    {
+        anim.SetTrigger("isStarted");
     }
 
-    private void SlideAnimStart(){
+    private void SlideAnimStart()
+    {
         anim.SetBool("isSlide", true);
     }
-    private void SlideAnimFinish(){
+    private void SlideAnimFinish()
+    {
         anim.SetBool("isSlide", false);
     }
 
-    private void JumpAnimStart(){
+    private void JumpAnimStart()
+    {
         anim.SetBool("isJump", true);
     }
     //     private void JumpAnimFinish(){

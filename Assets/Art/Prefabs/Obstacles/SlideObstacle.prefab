@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8557369925587824520}
   - component: {fileID: 6645528653048876511}
   - component: {fileID: 1548073156162273817}
+  - component: {fileID: 3369690144705339275}
   m_Layer: 8
   m_Name: ObstacleTop
   m_TagString: Untagged
@@ -100,12 +101,24 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.67401373, z: 1}
+  m_Center: {x: 0, y: 0.16299313, z: 0}
+--- !u!114 &3369690144705339275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6326090979775260368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776b0e4beef1563408e35aac26776942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6502504912562625761
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +131,7 @@ GameObject:
   - component: {fileID: 7719183832172292681}
   - component: {fileID: 2137178742530948119}
   - component: {fileID: 6203064674105394905}
+  - component: {fileID: 2880801506244535110}
   m_Layer: 8
   m_Name: Obstacle (1)Right
   m_TagString: Untagged
@@ -206,12 +220,24 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.8189846, y: 1, z: 1}
+  m_Center: {x: 0.090507686, y: 0, z: 0}
+--- !u!114 &2880801506244535110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6502504912562625761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776b0e4beef1563408e35aac26776942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6809070067469701028
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +250,7 @@ GameObject:
   - component: {fileID: 1989727176509676819}
   - component: {fileID: 8677467076930448474}
   - component: {fileID: 5491153937610295413}
+  - component: {fileID: 6640188014834595491}
   m_Layer: 8
   m_Name: ObstacleLeft
   m_TagString: Untagged
@@ -312,12 +339,24 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.7588438, y: 1, z: 1}
+  m_Center: {x: -0.12057811, y: 0, z: 0}
+--- !u!114 &6640188014834595491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809070067469701028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776b0e4beef1563408e35aac26776942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8805854421064450106
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,7 +463,8 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 64515225882820632, guid: d2201b576d0da384fb8f681e57559ea8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -506,7 +546,8 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 64515225882820632, guid: d2201b576d0da384fb8f681e57559ea8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
