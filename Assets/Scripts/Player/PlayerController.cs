@@ -82,14 +82,14 @@ public class PlayerController : MonoBehaviour
         isCrouching = Input.GetKey(KeyCode.S);
         Crouch(isCrouching);
 
-        if (isCrouching)
-        {
-            Debug.Log("Egilme baslatildi");
-        }
-        else
-        {
-            Debug.Log("Egilme durduruldu");
-        }
+        // if (isCrouching)
+        // {
+        //     Debug.Log("Egilme baslatildi");
+        // }
+        // else
+        // {
+        //     Debug.Log("Egilme durduruldu");
+        // }
     }
 
     private void Move() //ileri gitme icin rigidbody kullanmasak da olur
@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
     private void Crouch(bool isCrouching)
     {
-        Debug.Log("egildi");
+        //Debug.Log("egildi");
         if (isCrouching)
         {
             transform.localScale = new Vector3(transform.localScale.x, playerData.CrouchScaleY, transform.localScale.z);
@@ -162,6 +162,13 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = originalScale;
         }
+    }
+
+    public void IncreaseSpeed(float speedIncrease)
+    {
+        playerData.Speed += speedIncrease;
+        // Hızın maksimum sınıra ulaşmasını sağlamak
+        playerData.Speed = Mathf.Min(playerData.Speed, PlayerData.maxSpeed);
     }
 
 }

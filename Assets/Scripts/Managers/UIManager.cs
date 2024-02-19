@@ -52,27 +52,31 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     }
 
     private void Update()
-{
-    if (levelState == LevelState.Playing)
     {
-        score += Time.deltaTime * scoreMultiplier;
-        UpdateScoreText();
-        
-        if (Mathf.FloorToInt(score / 100) > Mathf.FloorToInt(goldScore / 100))
+        if (levelState == LevelState.Playing)
         {
-            goldScore = score;
-            UpdateGold(5); 
-            ShowBonusGoldMessage(); 
+            score += Time.deltaTime * scoreMultiplier;
+            UpdateScoreText();
+
+            if (Mathf.FloorToInt(score / 100) > Mathf.FloorToInt(goldScore / 100))
+            {
+                goldScore = score;
+                UpdateGold(5);
+                ShowBonusGoldMessage();
+                if (PlayerController.instance != null)
+                {
+                    PlayerController.instance.IncreaseSpeed(1f); 
+                }
+            }
+        }
+
+        if (Input.GetMouseButton(0) && startPanelActive)
+        {
+            StartCoroutine(StartPanelSetActive(false, 0));
+            startPanelActive = false;
+            levelState = LevelState.Playing;
         }
     }
-
-    if (Input.GetMouseButton(0) && startPanelActive)
-    {
-        StartCoroutine(StartPanelSetActive(false, 0));
-        startPanelActive = false;
-        levelState = LevelState.Playing;
-    }
-}
     private void UpdateHealthText()
     {
         healthText.text = "Health: " + Mathf.RoundToInt(health).ToString();
@@ -158,7 +162,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     private void ShowBonusGoldMessage() //100 skor = 5 gold
     {
         bonusGoldText.text = "Extra 5 Golds!";
-        bonusGoldText.gameObject.SetActive(true); 
+        bonusGoldText.gameObject.SetActive(true);
         StartCoroutine(HideBonusGoldMessage(5));
     }
 

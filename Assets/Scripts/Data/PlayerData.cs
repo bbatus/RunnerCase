@@ -62,7 +62,7 @@ public class PlayerData //data class'tan playercontroller'a çekicez
     }
     [Space(20)]
     [Header("Constans")]
-    private const float minSpeed = 1f, maxSpeed = 10f;
+    public const float minSpeed = 1f, maxSpeed = 10f;
     private const float minDragSpeed = 0.1f, maxDragSpeed = 1f;
     private const float minJumpForce = 1f, maxJumpForce = 10f;
     private const float minCrouchScaleY = 0.3f, maxCrouchScaleY = 1f;
