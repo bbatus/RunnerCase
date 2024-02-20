@@ -19,12 +19,14 @@ Hypercasual Runner Unity Project!
 4. Enums
 5. Player animations
 
+[Video Link](https://www.youtube.com/watch?v=uXvxQqHIdKY)
+
 ![Ekran Görüntüsü 1](https://github.com/bbatus/RunnerCase/blob/master/Images/1.png)
 ![Ekran Görüntüsü 2](https://github.com/bbatus/RunnerCase/blob/master/Images/2.png)
 ![Ekran Görüntüsü 3](https://github.com/bbatus/RunnerCase/blob/master/Images/3.png)
 ![Ekran Görüntüsü 4](https://github.com/bbatus/RunnerCase/blob/master/Images/4.png)
 
-[Video Link](https://www.youtube.com/watch?v=uXvxQqHIdKY)
+
 
 
 
