@@ -16,47 +16,55 @@ public class PlayerAnimationController : MonoBehaviour
         if (UIManager.instance.levelState == LevelState.Playing)
         {
             RunAnim();
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                SlideAnimStart();
-            }
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                SlideAnimFinish();
-            }
+            // if (Input.GetKeyDown(KeyCode.S))
+            // {
+            //     SlideAnimStart();
+            // }
+            // if (Input.GetKeyUp(KeyCode.S))
+            // {
+            //     SlideAnimFinish();
+            // }
             CheckJumpAnim();
+            CheckSlideAnim();
 
             //             if(Input.GetKeyUp(KeyCode.W)){
             //     JumpAnimFinish();
             // }
+
+
+        }
+        if (UIManager.instance.levelState == LevelState.Lose)
+        {
+            anim.SetTrigger("isDeath");
         }
     }
 
     private void CheckJumpAnim()
     {
-        if (Input.GetKeyDown(KeyCode.W) )
-        {
-            JumpAnimStart();
-        }
+        anim.SetBool("isJump", Input.GetKey(KeyCode.W));
+    }
+
+    private void CheckSlideAnim(){
+        anim.SetBool("isSlide", Input.GetKey(KeyCode.S));
     }
     private void RunAnim()
     {
         anim.SetTrigger("isStarted");
     }
 
-    private void SlideAnimStart()
-    {
-        anim.SetBool("isSlide", true);
-    }
-    private void SlideAnimFinish()
-    {
-        anim.SetBool("isSlide", false);
-    }
+    // private void SlideAnimStart()
+    // {
+    //     anim.SetBool("isSlide", true);
+    // }
+    // private void SlideAnimFinish()
+    // {
+    //     anim.SetBool("isSlide", false);
+    // }
 
-    private void JumpAnimStart()
-    {
-        anim.SetBool("isJump", true);
-    }
+    // private void JumpAnimStart()
+    // {
+    //     anim.SetTrigger("isJump");
+    // }
     //     private void JumpAnimFinish(){
     //     anim.SetBool("isJump", false);
     // }

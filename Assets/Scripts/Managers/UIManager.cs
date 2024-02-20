@@ -108,11 +108,11 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             highScorePanel.color = Color.white;
         });
     }
-    public void ResetHighScore()
-    {
-        PlayerPrefs.SetFloat("HighScore", 0);
-        LoadHighScore();
-    }
+    // public void ResetHighScore() //HighScore sifirlamak icin Canvastan buttonu active yap!!
+    // {
+    //     PlayerPrefs.SetFloat("HighScore", 0);
+    //     LoadHighScore();
+    // }
     private void UpdateHealthText()
     {
         healthText.text = "Health: " + Mathf.RoundToInt(health).ToString();
@@ -128,7 +128,9 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         UpdateHealthUI();
         if (health < 0)
         {
+            levelState = LevelState.Lose;
             StartCoroutine(ActivateLevelFailedPanel(0));
+            Debug.Log("girdi");
         }
     }
     private void UpdateHealthUI() //Can degerlerini azalt UI
@@ -157,8 +159,9 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     }
     public void StartBtnAction() //levelstate degistirir.
     {
-        StartCoroutine(StartPanelSetActive(false, 0));
         levelState = LevelState.Playing;
+        StartCoroutine(StartPanelSetActive(false, 0));
+        
     }
 
     public IEnumerator StartPanelSetActive(bool targetBool, float delay)
