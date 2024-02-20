@@ -22,6 +22,9 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     [SerializeField] private GameObject frameImage;
     [SerializeField] private Text healthText;
     [SerializeField] private GameObject[] hearts;
+    [SerializeField] private Text highScoreText;
+    [SerializeField] private Image highScorePanel;
+    private bool isHighScore = false;
     [Space(20)]
     [Header("Control Variables")]
     [SerializeField] private bool startPanelActive = true;
@@ -49,6 +52,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     {
         //levelState = LevelState.Stop;
         UpdateGold(0);
+        LoadHighScore();
     }
 
     private void Update()
@@ -57,6 +61,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         {
             score += Time.deltaTime * scoreMultiplier;
             UpdateScoreText();
+            CheckHighScore();
 
             if (Mathf.FloorToInt(score / 100) > Mathf.FloorToInt(goldScore / 100))
             {
@@ -65,7 +70,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
                 ShowBonusGoldMessage();
                 if (PlayerController.instance != null)
                 {
-                    PlayerController.instance.IncreaseSpeed(1f); 
+                    PlayerController.instance.IncreaseSpeed(1f);
                 }
             }
         }
@@ -76,6 +81,37 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             startPanelActive = false;
             levelState = LevelState.Playing;
         }
+    }
+
+    private void CheckHighScore()
+    {
+        if (score > PlayerPrefs.GetFloat("HighScore", 0))
+        {
+            PlayerPrefs.SetFloat("HighScore", score);
+            highScoreText.text = "HS: " + Mathf.RoundToInt(score).ToString();
+            HighScoreAchieved();
+            isHighScore = true;
+        }
+    }
+
+    private void LoadHighScore()
+    {
+        float highScore = PlayerPrefs.GetFloat("HighScore", 0);
+        highScoreText.text = "HS: " + Mathf.RoundToInt(highScore).ToString();
+        isHighScore = false;
+    }
+    private void HighScoreAchieved()
+    {
+        highScorePanel.color = Color.green;
+        highScorePanel.DOFade(0.5f, 0.5f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+        {
+            highScorePanel.color = Color.white;
+        });
+    }
+    public void ResetHighScore()
+    {
+        PlayerPrefs.SetFloat("HighScore", 0);
+        LoadHighScore();
     }
     private void UpdateHealthText()
     {
