@@ -1587,13 +1587,13 @@ MonoBehaviour:
   pools:
   - tag: Level1
     prefab: {fileID: 3932908738779094230, guid: ca8b6fa6c7d527c4997155e8a79a6724, type: 3}
-    size: 1
+    size: 3
   - tag: Level2
     prefab: {fileID: 4510273235979327507, guid: 61aa86bbfeb4d40488520fd624aca103, type: 3}
-    size: 1
+    size: 3
   - tag: Level3
     prefab: {fileID: 2289093162401978574, guid: 1c97167f30f5a5c4d92cc9485d079960, type: 3}
-    size: 1
+    size: 3
 --- !u!4 &1005205134
 Transform:
   m_ObjectHideFlags: 0
@@ -2075,12 +2075,12 @@ MonoBehaviour:
   goldText: {fileID: 1156424671}
   frameImage: {fileID: 2015113890}
   healthText: {fileID: 317035122}
+  highScoreText: {fileID: 1948125184}
+  highScorePanel: {fileID: 419296601}
   hearts:
   - {fileID: 1189898983}
   - {fileID: 2069761376}
   - {fileID: 1081781533}
-  highScoreText: {fileID: 1948125184}
-  highScorePanel: {fileID: 419296601}
   startPanelActive: 1
   goldAmount: 0
 --- !u!1 &1310188158
@@ -3663,7 +3663,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2105923430}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

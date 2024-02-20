@@ -13,6 +13,7 @@ public class Obstacle : MonoBehaviour
         //UIManager.instance.levelState = LevelState.Lose;
         //UIManager.instance.levelFailedPanel.SetActive(true);
         UIManager.instance.DecreaseHealth();
+        Debug.Log("Obstacle'a carpti");
     }
 }
 }

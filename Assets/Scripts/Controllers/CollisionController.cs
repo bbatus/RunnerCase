@@ -11,7 +11,7 @@ public class CollisionController : MonoBehaviour
         pc = GetComponentInParent<PlayerController>();
         if (pc == null)
         {
-            Debug.LogError("PlayerController component not found in parent!");
+            Debug.LogError("PlayerController component bulunamadi");
         }
     }
     private void OnCollisionEnter(Collision other)

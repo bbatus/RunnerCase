@@ -5,7 +5,7 @@ using UnityEngine;
 public enum LevelState
 {
     Stop,
-     Playing, 
-     Lose
+    Playing,
+    Lose
 
 }

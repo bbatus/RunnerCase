@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class CollectGold : MonoBehaviour
 {
-private void OnTriggerEnter(Collider other) {
-    if (other.gameObject.layer == 6)
+    private void OnTriggerEnter(Collider other)
     {
-        Destroy(this.gameObject);
-        UIManager.instance.UpdateGold(1);
+        if (other.gameObject.layer == 6)
+        {
+            this.gameObject.SetActive(false);
+            UIManager.instance.UpdateGold(1);
+            Debug.Log("Gold toplandi");
+        }
     }
-}
+
+    public void ResetGold()
+    {
+        this.gameObject.SetActive(true);
+    }
 }

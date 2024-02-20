@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Awake basladi");
+        Debug.Log("Player Controller Awake basladi");
         if (instance == null)
         {
             instance = this;
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
     private void GroundCheck()
     {
         IsGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+         Debug.Log("Ground checked");
     }
     private void CheckJump()
     {
@@ -101,6 +102,7 @@ public class PlayerController : MonoBehaviour
     public void SpeedEdit(float _time)  //Hızı bir anda yükseltmemek icin
     {
         DOTween.To(() => playerData.Speed, x => playerData.Speed = x, playerStartSpeed, _time);
+         Debug.Log("Hiz editlendi");
     }
 
     private void Drag()
@@ -167,8 +169,8 @@ public class PlayerController : MonoBehaviour
     public void IncreaseSpeed(float speedIncrease)
     {
         playerData.Speed += speedIncrease;
-        // Hızın maksimum sınıra ulaşmasını sağlamak
         playerData.Speed = Mathf.Min(playerData.Speed, PlayerData.maxSpeed);
+         Debug.Log("Hiz artti");
     }
 
 }

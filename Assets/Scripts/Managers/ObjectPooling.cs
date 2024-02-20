@@ -63,20 +63,21 @@ public class ObjectPooling : MonoBehaviour
         GameObject objectToSpawn;
         if (objectQueue.Count == 0)
         {
-            // Havuz boşsa, havuzu genişlet
             objectToSpawn = ExpandPool(tag, objectQueue);
         }
         else
         {
-            // Havuzda obje varsa, kullan
             objectToSpawn = objectQueue.Dequeue();
         }
+
+        // Gerekirse objeyi resetle
+        ResetObject(objectToSpawn);
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
 
-        objectQueue.Enqueue(objectToSpawn); // Bu satır düzeltilmiş kodda önemli
+        objectQueue.Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }
@@ -89,12 +90,22 @@ public class ObjectPooling : MonoBehaviour
             return null;
         }
 
-        // Havuz için yeni bir obje oluştur
         GameObject newObj = Instantiate(prefab);
-        newObj.SetActive(false); // İlk oluşturulduğunda pasif olacak
+        newObj.SetActive(false);
 
-        objectQueue.Enqueue(newObj); // Yeni objeyi doğrudan havuza ekleyin
+        objectQueue.Enqueue(newObj);
 
         return newObj;
+    }
+
+    private void ResetObject(GameObject obj)
+    {
+        // Burada obje için gerekli reset işlemlerini gerçekleştir
+        // Örneğin, Collectable objeleri resetle
+        var collectables = obj.GetComponentsInChildren<CollectGold>(true);
+        foreach (var collectable in collectables)
+        {
+            collectable.ResetGold();
+        }
     }
 }

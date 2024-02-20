@@ -14,16 +14,16 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     [Space(20)]
     [Header("Panel Objects")]
     [SerializeField] private GameObject startPanel;
-    [SerializeField] public GameObject levelFailedPanel;
+    public GameObject levelFailedPanel;
     [SerializeField] Text failPanelText;
     [SerializeField] private Text timeScoreText;
     [SerializeField] private Text bonusGoldText;
     [SerializeField] private Text goldText;
     [SerializeField] private GameObject frameImage;
     [SerializeField] private Text healthText;
-    [SerializeField] private GameObject[] hearts;
     [SerializeField] private Text highScoreText;
     [SerializeField] private Image highScorePanel;
+    [SerializeField] private GameObject[] hearts;
     private bool isHighScore = false;
     [Space(20)]
     [Header("Control Variables")]
@@ -44,8 +44,8 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         {
             Destroy(this.gameObject);
         }
-
         Application.targetFrameRate = 60; //fps 60 kisitla
+        Debug.Log("UIManager awake calisti");
     }
 
     private void Start()
@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         //levelState = LevelState.Stop;
         UpdateGold(0);
         LoadHighScore();
+        Debug.Log("UIManager start calisti");
     }
 
     private void Update()
@@ -67,10 +68,12 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             {
                 goldScore = score;
                 UpdateGold(5);
+                Debug.Log("100 skor = 5 gold");
                 ShowBonusGoldMessage();
                 if (PlayerController.instance != null)
                 {
                     PlayerController.instance.IncreaseSpeed(1f);
+                    Debug.Log("Player speed artti");
                 }
             }
         }
@@ -81,6 +84,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             startPanelActive = false;
             levelState = LevelState.Playing;
         }
+        //Debug.Log("UIManager update calisti");
     }
 
     private void CheckHighScore()
@@ -99,8 +103,9 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         float highScore = PlayerPrefs.GetFloat("HighScore", 0);
         highScoreText.text = "HS: " + Mathf.RoundToInt(highScore).ToString();
         isHighScore = false;
+        Debug.Log("en yüksek skor kaydedildi : " + score);
     }
-    private void HighScoreAchieved()
+    private void HighScoreAchieved() //dotween ile animasyon yap
     {
         highScorePanel.color = Color.green;
         highScorePanel.DOFade(0.5f, 0.5f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
@@ -124,13 +129,14 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     private void UpdateHealth() //Can degeri azalt float
     {
         health -= 1;
+        Debug.Log("Saglik 1 azaldi");
         UpdateHealthText();
         UpdateHealthUI();
         if (health < 0)
         {
             levelState = LevelState.Lose;
             StartCoroutine(ActivateLevelFailedPanel(0));
-            Debug.Log("girdi");
+            Debug.Log("levelstate lose oldu / fail panel geldi");
         }
     }
     private void UpdateHealthUI() //Can degerlerini azalt UI
@@ -146,6 +152,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
                 hearts[i].SetActive(false);
             }
         }
+        Debug.Log("HEART UI azaldi");
     }
 
     public void DecreaseHealth()
@@ -161,16 +168,16 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
     {
         levelState = LevelState.Playing;
         StartCoroutine(StartPanelSetActive(false, 0));
-        
+
     }
 
-    public IEnumerator StartPanelSetActive(bool targetBool, float delay)
+    public IEnumerator StartPanelSetActive(bool targetBool, float delay) //Start panel tap to start aktif edicez
     {
         yield return new WaitForSeconds(delay);
         startPanel.SetActive(targetBool);
     }
 
-    public void RetryButton() //sahneye button ekle
+    public void RetryButton() //sahneye button ekle tekrar yüklenebilsin
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -196,6 +203,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
             yield return new WaitForSeconds(.5f);
             frameImage.SetActive(false);
         }
+        Debug.Log("Warning effect");
     }
 
     private void ShowBonusGoldMessage() //100 skor = 5 gold
@@ -203,6 +211,7 @@ public class UIManager : MonoBehaviour //Skor +altın + baslangic + losepanel +t
         bonusGoldText.text = "Extra 5 Golds!";
         bonusGoldText.gameObject.SetActive(true);
         StartCoroutine(HideBonusGoldMessage(5));
+        Debug.Log("5 gold mesaji");
     }
 
     private IEnumerator HideBonusGoldMessage(float delay)
